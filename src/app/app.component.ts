@@ -68,10 +68,15 @@ export class AppComponent {
       data: {
         task: {},
       },
-    })
+    });
 
     dialogRef
       .afterClosed()
-      .subscribe((result: TaskDialogResult) => this.todo.push(result.task));
+      .subscribe((result: TaskDialogResult) => {
+        if (!result.task.title) {
+          return;
+        }
+        this.todo.push(result.task)
+      });
   }
 }
