@@ -18,6 +18,10 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { TaskComponent } from './task/task.component';
 import { TaskDialogComponent } from './task-dialog/task-dialog.component';
 
+import { environment } from 'src/environments/environment';
+import { AngularFireModule } from '@angular/fire';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -35,7 +39,9 @@ import { TaskDialogComponent } from './task-dialog/task-dialog.component';
     MatFormFieldModule,
     MatInputModule,
     FormsModule,
-    DragDropModule
+    DragDropModule,
+    AngularFireModule.initializeApp(environment.firebaseConfig),
+    AngularFirestoreModule
   ],
   providers: [],
   bootstrap: [AppComponent]
