@@ -26,8 +26,25 @@ export class AppComponent {
 
   constructor(private dialog: MatDialog) { }
 
-  editTask(list: string, task: Task): void {
-    // do something
+  editTask(list: 'done' | 'todo' | 'inProgress', task: Task): void {
+    const dialogRef = this.dialog.open(TaskDialogComponent, {
+      width: '270px',
+      data: {
+        task,
+        enableDelete: true,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result: TaskDialogResult) => {
+      const dataList = this[list];
+      const taskIndex = dataList.indexOf(task);
+
+      if (result.delete) {
+        dataList.splice(taskIndex, 1);
+      } else {
+        dataList[taskIndex] = task;
+      }
+    });
   }
 
   drop(event: CdkDragDrop<Task[]>): void {
@@ -51,10 +68,15 @@ export class AppComponent {
       data: {
         task: {},
       },
-    })
+    });
 
     dialogRef
       .afterClosed()
-      .subscribe((result: TaskDialogResult) => this.todo.push(result.task));
+      .subscribe((result: TaskDialogResult) => {
+        if (!result.task.title) {
+          return;
+        }
+        this.todo.push(result.task)
+      });
   }
 }
